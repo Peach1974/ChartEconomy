@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Filter and Date Selection</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" />
+  <style>
+    /* CSS styles for layout */
+    
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .form-row div {
+      margin-right: 10px;
+    }
+
+    .form-row label {
+      display: inline-block;
+      margin-bottom: 5px;
+      margin-left: 5px;
+    }
+
+    .form-control {
+      margin-right: 5px;
+    }
+    
+    .date-picker {
+      width: 100px;
+      margin-right: 5px;
+    }
+
+    .icon-button {
+      /* Your icon button styles */
+    }
+    
+    /* CSS styles for layout */
+    .container {
+      margin-top: 20px;
+      max-width: 800px;
+      width: 100%;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+      box-sizing: border-box;
+      padding: 0 20px;
+    }
+
+    @media (min-width: 1200px) {
+      .container {
+        width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    
+    form {
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+    
+    .checkbox-label {
+      margin-right: 5px;
+    }
+    
+    .multiselect {
+      width: 200px;
+    }
+    
+    .multiselect-filter {
+      margin-left: 5px;
+    }
+    
+    .icon-button {
+      background-color: #f5f5f5;
+      border: none;
+      color: #333;
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .date-picker {
+      width: 150px;
+      margin-right: 10px;
+    }
+    
+    .calendar-icon {
+      vertical-align: middle;
+      margin-left: 5px;
+    }
+    
+    /* Date Picker Styles */
+    .ui-datepicker {
+      background: #ffffff;
+      border-radius: 15px;
+    }
+    .ui-datepicker-header {
+      height: 40px;
+      line-height: 40px;
+      color: #ffffff;
+      background: #31639c;
+      margin-bottom: 10px;
+    }
+    .ui-datepicker-prev,
+    .ui-datepicker-next {
+      width: 20px;
+      height: 20px;
+      text-indent: 9999px;
+      border-radius: 100%;
+      cursor: pointer;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+    .ui-datepicker-prev {
+      float: left;
+      margin-left: 12px;
+    }
+    .ui-datepicker-prev:after {
+      transform: rotate(45deg);
+      margin: -43px 0px 0px 8px;
+    }
+    .ui-datepicker-next {
+      float: right;
+      margin-right: 12px;
+    }
+    .ui-datepicker-next:after {
+      transform: rotate(-135deg);
+      margin: -43px 0px 0px 6px;
+    }
+    .ui-datepicker-prev:after,
+    .ui-datepicker-next:after {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-left: 2px solid #ffffff;
+      border-bottom: 2px solid #ffffff;
+    }
+    .ui-datepicker-prev:hover,
+    .ui-datepicker-next:hover,
+    .ui-datepicker-prev:hover:after,
+    .ui-datepicker-next:hover:after {
+      border-color: #333333;
+    }
+    .ui-datepicker-title {
+      text-align: center;
+      font-size: 25px;
+    }
+    .ui-datepicker-calendar {
+      width: 90%;
+      text-align: center;
+    }
+    .ui-datepicker-calendar thead tr th span {
+      display: block;
+      width: 40px;
+      color: #31639c;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+    .ui-state-default {
+      display: block;
+      text-decoration: none;
+      color: #333333;
+      line-height: 40px;
+      font-size: 16px;
+    }
+    .ui-state-default:hover {
+      color: #ffffff;
+      background:#31639c;
+      border-radius: 45px;
+      transition: all 0.25s cubic-bezier(0.7, -0.12, 0.2, 1.12);
+    }
+    .ui-state-highlight {
+      color: #ffffff;
+      background-color: #31639c;
+      border-radius: 50px;
+    }
+    .ui-state-active {
+      color: #ffffff;
+      background-color: #31639c;
+      border-radius: 50px;
+    }
+    .ui-datepicker-unselectable .ui-state-default {
+      color: #eee;
+      border: 2px solid transparent;
+    }
+    
+    /* Filter Tabs Styles */
+    .filter-tabs {
+      display: flex;
+      background-color: #f1f1f1;
+      gap: 0;
+    }
+
+    .filter-tab {
+      flex-grow: 1;
+      text-align: center;
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .filter-tab:hover {
+      background-color: #ddd;
+    }
+
+    .filter-tab.active {
+      background-color: #ccc;
+    }
+
+    /* Custom styles */
+    .industry-label {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .country-label,
+    .region-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .clock {
+      font-size: 12px;
+      color: #333;
+      margin-left: 5px;
+    }
+    
+    
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form>
+      <fieldset>
+        <div class="form-row">
+          <div class="country-label">
+            <label class="checkbox-label">Country</label>
+            <select id="countrySelect" class="multiselect form-control" multiple>
+              <option value="usa">USA</option>
+              <option value="canada">Canada</option>
+              <option value="uk">UK</option>
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+          <div class="region-label">
+            <label class="checkbox-label">Region</label>
+            <select class="form-control" id="groupingSelect">
+              <option value=""></option>
+              <option value="g20">G20</option>
+              <option value="eu">European Union</option>
+              <!-- Add more grouping options as needed -->
+            </select>
+          </div>
+          <div>
+            <label class="checkbox-label">Timezone:</label>
+            <span class="clock">12:00:00 AM</span>
+            <select class="form-control">
+              <option value="">Select timezone</option>
+              <option value="America/New_York">(UTC-05:00) Eastern Time</option>
+              <option value="America/Los_Angeles">(UTC-08:00) Pacific Time</option>
+              <!-- Add more timezone options as needed -->
+            </select>
+          </div>
+          <div>
+            <label class="checkbox-label">Search:</label>
+            <input type="text" class="form-control" id="searchBox" placeholder="Search">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <div class="text-center">
+              <label class="checkbox-label">Categories</label>
+            </div>
+            <div>
+              <label><input type="checkbox" name="category" value="all"> All categories</label>
+              <label><input type="checkbox" name="category" value="economic" checked> Economic Releases</label>
+              <label><input type="checkbox" name="category" value="commodities"> Commodities</label>
+              <label><input type="checkbox" name="category" value="events"> Events</label>
+            </div>
+          </div>
+          <div id="industryFilters" style="display: none;">
+            <div class="industry-label" style="font-weight: bold;">Industry</div>
+            <select id="industrySelect" class="multiselect form-control" multiple>
+              <!-- Options for industry categories -->
+              <option value="all">All Industries</option>
+              <option value="category1">Economy</option>
+              <option value="category2">Commodities</option>
+              <option value="category3">Health</option>
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <div class="filter-tabs">
+              <div class="filter-tab active" data-filter="day">Day</div>
+              <div class="filter-tab" data-filter="week">Week</div>
+              <div class="filter-tab" data-filter="month">Month</div>
+            </div>
+          </div>
+          <div>
+            <label class="checkbox-label">From:</label>
+            <div>
+              <input type="text" class="date-picker" id="datepicker-from" placeholder="From">
+            </div>
+          </div>
+          <div>
+            <label class="checkbox-label">To:</label>
+            <div>
+              <input type="text" class="date-picker" id="datepicker-to" placeholder="To">
+            </div>
+          </div>
+          <div>
+            <button class="icon-button"><img src="download-icon.png" alt="Download"></button>
+          </div>
+        </div>
+
+      </fieldset>
+    </form>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      function toggleIndustryFilters(checkbox) {
+        var industryFilters = document.getElementById('industryFilters');
+        industryFilters.style.display = checkbox.checked ? 'block' : 'none';
+
+        if (checkbox.checked) {
+          $('#industrySelect').val(null).multiselect('refresh'); // Reset selected options
+        }
+      }
+
+      // Select All Categories checkbox
+      $('input[name="category"][value="all"]').on('change', function() {
+        if ($(this).prop('checked')) {
+          $('input[name="category"][value!="all"]').prop('checked', true);
+          toggleIndustryFilters($('input[name="category"][value="events"]')[0]);
+        } else {
+          $('input[name="category"][value!="all"]').prop('checked', false);
+          toggleIndustryFilters($('input[name="category"][value="events"]')[0]);
+        }
+      });
+
+      // Events checkbox
+      $('input[name="category"][value="events"]').on('change', function() {
+        toggleIndustryFilters(this);
+      });
+
+      // Grouping selection
+      $('#groupingSelect').on('change', function() {
+        var selectedGrouping = $(this).val();
+        var selectedCountries = [];
+
+        if (selectedGrouping === 'g20') {
+          selectedCountries = ['usa', 'canada', 'uk' /* Add more G20 countries here */];
+        }
+        // Add more conditions for other groupings
+
+        $('#countrySelect').val(selectedCountries).multiselect('refresh');
+      });
+
+      // Initialize Bootstrap Multiselect for countrySelect
+      $('#countrySelect').multiselect({
+        nonSelectedText: 'Select Country/Region',
+        enableFiltering: true,
+        enableCaseInsensitiveFiltering: true,
+        buttonWidth: '200px'
+      });
+
+      // Initialize Bootstrap Multiselect for industrySelect
+      $('#industrySelect').multiselect({
+        nonSelectedText: 'Select Industry Category',
+        buttonWidth: '200px'
+      });
+
+      // Filter options based on search input
+      $('#searchBox').on('input', function() {
+        var searchText = $(this).val().toLowerCase();
+        $('#dataTable tbody tr').each(function() {
+          var rowData = $(this).find('td');
+          var showRow = false;
+          rowData.each(function() {
+            var cellData = $(this).text().toLowerCase();
+            if (cellData.includes(searchText)) {
+              showRow = true;
+              return false; // Break the loop if match found
+            }
+          });
+          $(this).toggle(showRow);
+        });
+      });
+
+      // Event handler for filter tabs
+      $('.filter-tab').on('click', function() {
+        $('.filter-tab').removeClass('active');
+        $(this).addClass('active');
+
+        var filterValue = $(this).data('filter');
+        var fromDate, toDate;
+
+        if (filterValue === 'day') {
+          fromDate = new Date(); // Today's date
+          toDate = new Date(); // Today's date
+        } else if (filterValue === 'week') {
+          fromDate = new Date();
+          toDate = new Date();
+          toDate.setDate(toDate.getDate() + 7); // Add 7 days to the current date
+        } else if (filterValue === 'month') {
+          fromDate = new Date();
+          toDate = new Date();
+          toDate.setMonth(toDate.getMonth() + 1); // Add 1 month to the current date
+        }
+
+        // Update the datepicker values
+        $("#datepicker-from").datepicker("setDate", fromDate);
+        $("#datepicker-to").datepicker("setDate", toDate);
+      });
+
+      // Initialize Datepicker
+      $("#datepicker-from").datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true
+      });
+
+      $("#datepicker-to").datepicker({
+        dateFormat: "dd-mm-yy",
+        changeMonth: true,
+        changeYear: true
+      });
+
+      // Get the current date
+      var currentDate = new Date();
+
+      // Format the current date as "dd-mm-yy"
+      var currentFormattedDate = $.datepicker.formatDate("dd-mm-yy", currentDate);
+
+      // Set the current date as the value for the 'From' and 'To' datepickers
+      $("#datepicker-from").val(currentFormattedDate);
+      $("#datepicker-to").val(currentFormattedDate);
+
+      // Set 'Day' as the default selected filter tab
+      $('.filter-tab[data-filter="day"]').addClass('active');
+    });
+  </script>
+</body>
+</html>
+
+
+<header>
+   <div class="search-wrapper">
+      <input type="text" id="search-bar" placeholder="Search..." onkeyup="searchFunction()">
+   </div>
+</header>
+<div class="calendar-container">
+   <main>
+     <!-- Main content specific to the page goes here -->
+     <!-- For example, charts for one page -->
+     <!-- Calendar for another page -->
+   </main>
+ </div>
+ <script src="script.js"></script>
+ <script src="calendar.js"></script>
+</body>
+</html>
+
+
+      <form>
+        <fieldset>
+          <div class="form-row">
+            <div class="country-label">
+              <label class="checkbox-label">Country</label>
+              <select id="countrySelect" class="multiselect form-control" multiple>
+                <option value="usa">USA</option>
+                <option value="canada">Canada</option>
+                <option value="uk">UK</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
+            <div class="region-label">
+              <label class="checkbox-label">Region</label>
+              <select class="form-control" id="groupingSelect">
+                <option value=""></option>
+                <option value="g20">G20</option>
+                <option value="eu">European Union</option>
+                <!-- Add more grouping options as needed -->
+              </select>
+            </div>
+            <div>
+              <label class="checkbox-label">Timezone:</label>
+              <span class="clock">12:00:00 AM</span>
+              <select class="form-control">
+                <option value="">Select timezone</option>
+                <option value="America/New_York">(UTC-05:00) Eastern Time</option>
+                <option value="America/Los_Angeles">(UTC-08:00) Pacific Time</option>
+                <!-- Add more timezone options as needed -->
+              </select>
+            </div>
+            <div>
+              <label class="checkbox-label">Search:</label>
+              <input type="text" class="form-control" id="searchBox" placeholder="Search">
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <div class="text-center">
+                <label class="checkbox-label">Categories</label>
+              </div>
+              <div>
+                <label><input type="checkbox" name="category" value="all"> All categories</label>
+                <label><input type="checkbox" name="category" value="economic" checked> Economic Releases</label>
+                <label><input type="checkbox" name="category" value="commodities"> Commodities</label>
+                <label><input type="checkbox" name="category" value="events"> Events</label>
+              </div>
+            </div>
+            <div id="industryFilters" style="display: none;">
+              <div class="industry-label" style="font-weight: bold;">Industry</div>
+              <select id="industrySelect" class="multiselect form-control" multiple>
+                <!-- Options for industry categories -->
+                <option value="all">All Industries</option>
+                <option value="category1">Economy</option>
+                <option value="category2">Commodities</option>
+                <option value="category3">Health</option>
+                <!-- Add more options as needed -->
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <div class="filter-tabs">
+                <div class="filter-tab active" data-filter="day">Day</div>
+                <div class="filter-tab" data-filter="week">Week</div>
+                <div class="filter-tab" data-filter="month">Month</div>
+              </div>
+            </div>
+            <div>
+              <label class="checkbox-label">From:</label>
+              <div>
+                <input type="text" class="date-picker" id="datepicker-from" placeholder="From">
+              </div>
+            </div>
+            <div>
+              <label class="checkbox-label">To:</label>
+              <div>
+                <input type="text" class="date-picker" id="datepicker-to" placeholder="To">
+              </div>
+            </div>
+            <div>
+              <button class="icon-button"><img src="download-icon.png" alt="Download"></button>
+            </div>
+          </div>
+  
+        </fieldset>
+      </form>

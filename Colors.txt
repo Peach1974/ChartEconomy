@@ -1,0 +1,1 @@
+color: #c9cdd4; (Dull white for the dark theme of the glossary cards.)
